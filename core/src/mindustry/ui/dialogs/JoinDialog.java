@@ -499,9 +499,11 @@ public class JoinDialog extends BaseDialog{
             return;
         }
 
-        if(player.name.trim() == swears){
-            ui.showInfo("banned word detected you cant join the server");
-            return;
+        for(String swear : swears){
+            if(player.name.toLowerCase().contains(swear)){
+                ui.showInfo("banned word detected you cant join the server");
+                return;
+            }
         }
 
         ui.loadfrag.show("@connecting");
