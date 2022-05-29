@@ -39,6 +39,7 @@ public class JoinDialog extends BaseDialog{
     String lastIp;
     int lastPort;
     Task ping;
+    String[] swears = {"shit", "fuck", "asshole", "nigger", "nigga", "niga", "faggot", "dick", "cunt", "bitch"};
 
     public JoinDialog(){
         super("@joingame");
@@ -495,6 +496,11 @@ public class JoinDialog extends BaseDialog{
     public void connect(String ip, int port){
         if(player.name.trim().isEmpty()){
             ui.showInfo("@noname");
+            return;
+        }
+
+        if(player.name.trim() == swears){
+            ui.showInfo("banned word detected you cant join the server");
             return;
         }
 
