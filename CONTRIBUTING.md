@@ -5,7 +5,8 @@ This is for code contributions. For translations, see [TRANSLATING](TRANSLATING.
 ## Basic Guidelines
 
 ### Use an IDE.
-Specifically, IntelliJ IDEA. Download the (free) Community Edition of it [here](https://www.jetbrains.com/idea/download/). Some people use other tools, like VS Code, but I would personally not recommend them for Java development.
+Specifically,Recommends use IntelliJ IDEA. Download the (free) Community Edition of it [here](https://www.jetbrains.com/idea/download/). 
+for VSCode you need to read [Java in Visual Studio Code](https://code.visualstudio.com/docs/languages/java) before developing
 
 ### Always test your changes.
 Do not submit something without at least running the game to see if it compiles.  
