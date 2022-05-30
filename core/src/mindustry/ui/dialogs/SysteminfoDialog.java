@@ -2,6 +2,8 @@ package mindustry.ui.dialogs;
 
 import arc.*;
 import arc.graphics.*;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
 import arc.input.KeyCode;
 import arc.scene.event.*;
 import arc.scene.ui.*;
@@ -9,6 +11,7 @@ import arc.scene.ui.layout.*;
 import arc.struct.*;
 import arc.util.*;
 import com.sun.management.OperatingSystemMXBean;
+import mindustry.core.Version;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.ui.*;
@@ -35,6 +38,8 @@ public class SysteminfoDialog extends Dialog{
     private Table menu;
     private BaseDialog Systeminfo;
     private Seq<SettingsMenuDialog.SettingsCategory> categories = new Seq<>();
+
+    //game version
 
 
     //detects what os and architecture it is
@@ -78,6 +83,19 @@ public class SysteminfoDialog extends Dialog{
                 p.margin(10f);
 
                 p.table(info -> {
+                    TextureRegion icon = Core.atlas.find("icon");
+                    float width = Core.graphics.getWidth(), height = Core.graphics.getHeight() - Core.scene.marginTop;
+                    float iconscl = Scl.scl(1);
+                    float iconw = Math.min(icon.width * iconscl, Core.graphics.getWidth() - Scl.scl(20));
+                    float iconh = iconw * (float)icon.height / icon.width;
+                    float fx = (int)(width / 2f);
+                    String version = Version.combined();
+
+                    float fy = (int)(height - 6 - iconh) + iconh / 2f;
+                    Draw.rect(icon, fx, fy, iconw, iconh);
+                    Fonts.outline.draw(version, fx + 5, fy + 2 - iconh/2f - Scl.scl(2f), Align.center);
+
+                    if(!android){
                     //os
                     info.add(bundle.get("os", "OS:\n")+ osget).left();
                     //ram usage with percentage and progressbar
@@ -85,7 +103,6 @@ public class SysteminfoDialog extends Dialog{
                     info.add("RAM:\nTotal:" +humanReadableByteCountSI(totalram)+ "\nUsage:" +humanReadableByteCountSI(ram)).left();
                     info.row();
                     //java vendor and version
-                    if(!android) {
                         info.add(bundle.get("java", "Java:\n") + System.getProperty("java.vendor") + " " + javaType + " " + System.getProperty("java.runtime.version")).left();
                     }
                 });

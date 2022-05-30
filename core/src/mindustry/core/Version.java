@@ -12,6 +12,8 @@ public class Version{
     public static String type = "unknown";
     /** Build modifier, e.g. 'alpha' or 'release' */
     public static String modifier = "unknown";
+    /** Codenames for the build, e.g. 'yaemiko' */
+    public static String codename = "unknown";
     /** Number specifying the major version, e.g. '4' */
     public static int number;
     /** Build number, e.g. '43'. set to '-1' for custom builds. */
@@ -20,6 +22,9 @@ public class Version{
     public static int revision = 0;
     /** Whether version loading is enabled. */
     public static boolean enabled = true;
+    /** version of client */
+    public static String versionNumber = "NaN";
+    /** client revision */
 
     public static void init(){
         if(!enabled) return;
@@ -32,6 +37,8 @@ public class Version{
         type = map.get("type");
         number = Integer.parseInt(map.get("number", "4"));
         modifier = map.get("modifier");
+        codename = map.get("codename");
+        versionNumber = map.get("version");
         if(map.get("build").contains(".")){
             String[] split = map.get("build").split("\\.");
             try{
@@ -66,8 +73,8 @@ public class Version{
     /** get menu version without colors */
     public static String combined(){
         if(build == -1){
-            return "custom build";
+            return "Genshindustry custom build";
         }
-        return ("Genshindustry " +(type.equals("official") ? modifier : type) + " build " + build + (revision == 0 ? "" : "." + revision));
+        return ("Genshindustry " +(type.equals("official") ? modifier : type) + " \"" +codename+ "\" b " + build + (revision == 0 ? "" : "." + revision)+ " v" + versionNumber);
     }
 }
