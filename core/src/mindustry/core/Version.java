@@ -75,6 +75,6 @@ public class Version{
         if(build == -1){
             return "Genshindustry custom build";
         }
-        return ("Genshindustry " +(type.equals("official") ? modifier : type) + " \"" +codename+ "\" b " + build + (revision == 0 ? "" : "." + revision)+ " v" + versionNumber);
+        return ("Genshindustry " +(type.equals("official") ? modifier : type) + " \"" +codename+ "\" b" + build + (revision == 0 ? "" : "." + revision)+ " v" + versionNumber);
     }
 }

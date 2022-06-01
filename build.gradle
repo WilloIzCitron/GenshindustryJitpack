@@ -20,6 +20,7 @@ buildscript{
         classpath "com.mobidevelop.robovm:robovm-gradle-plugin:2.3.15"
         classpath "com.github.Anuken.Arc:packer:$arcHash"
         classpath "com.github.Anuken.Arc:arc-core:$arcHash"
+        classpath 'com.android.tools.build:gradle:7.0.2'
     }
 }
 
@@ -38,11 +39,11 @@ allprojects{
 
     ext{
         versionNumber = '7'
-        version = "1.2"
-        buildversion = 136
-        if(!project.hasProperty("versionModifier")) versionModifier = 'alpha'
+        version = "1.3b1"
+        buildversion = "136"
+        if(!project.hasProperty("versionModifier")) versionModifier = 'beta'
         if(!project.hasProperty("versionType")) versionType = 'official'
-        if(!project.hasProperty("versionCodename")) versionCodename = 'Yae Miko'
+        if(!project.hasProperty("versionCodename")) versionCodename = 'Shenhe'
         appName = 'Genshindustry'
         steamworksVersion = '0b86023401880bb5e586bc404bedbaae9b1f1c94'
         rhinoVersion = '73a812444ac388ac2d94013b5cadc8f70b7ea027'

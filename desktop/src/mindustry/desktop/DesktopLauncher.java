@@ -37,7 +37,7 @@ public class DesktopLauncher extends ClientLauncher{
         try{
             Vars.loadLogger();
             new SdlApplication(new DesktopLauncher(arg), new SdlConfig(){{
-                title = "Genshindustry";
+                title = "Genshindustry " + Version.codename + " b" + Version.build+ " ( v" + Version.versionNumber + ")";
                 maximized = true;
                 width = 900;
                 height = 700;
@@ -219,10 +219,10 @@ public class DesktopLauncher extends ClientLauncher{
 
         if(total.contains("Couldn't create window") || total.contains("OpenGL 2.0 or higher") || total.toLowerCase().contains("pixel format") || total.contains("GLEW")|| total.contains("unsupported combination of formats")){
 
-            dialog.get(() -> message(
+            dialog.get(() -> errorMessage(
                 total.contains("Couldn't create window") ? "A graphics initialization error has occured! Try to update your graphics drivers:\n" + finalMessage :
                             "Your graphics card does not support the right OpenGL features.\n" +
-                                    "Try to update your graphics drivers. If this doesn't work, your computer may not support Mindustry.\n\n" +
+                                    "Try to update your graphics drivers. If this doesn't work, your computer may not support Genshindustry.\n\n" +
                                     "Full message: " + finalMessage));
             badGPU = true;
         }
@@ -232,7 +232,7 @@ public class DesktopLauncher extends ClientLauncher{
         CrashSender.send(e, file -> {
             Throwable fc = Strings.getFinalCause(e);
             if(!fbgp){
-                dialog.get(() -> message("A crash has occured. It has been saved in:\n" + file.getAbsolutePath() + "\n" + fc.getClass().getSimpleName().replace("Exception", "") + (fc.getMessage() == null ? "" : ":\n" + fc.getMessage())));
+                dialog.get(() -> errorMessage("A crash has occured. It has been saved in:\n" + file.getAbsolutePath() + "\n" + fc.getClass().getSimpleName().replace("Exception", "") + (fc.getMessage() == null ? "" : ":\n" + fc.getMessage())));
             }
         });
     }
@@ -290,6 +290,7 @@ public class DesktopLauncher extends ClientLauncher{
         String gameMode = "";
         String gamePlayersSuffix = "";
         String uiState = "";
+        String uiDetails = "";
 
         if(inGame){
             gameMapWithWave = Strings.capitalize(Strings.stripColors(state.map.name()));
@@ -297,15 +298,17 @@ public class DesktopLauncher extends ClientLauncher{
             if(state.rules.waves){
                 gameMapWithWave += " | Wave " + state.wave;
             }
-            gameMode = state.rules.pvp ? "PvP" : state.rules.attackMode ? "Attack" : "Survival";
+            gameMode = state.rules.pvp ? "PvP" : state.rules.infiniteResources ? "Sandbox" : state.rules.attackMode ? "Attack" : "Survival";
             if(net.active() && Groups.player.size() > 1){
                 gamePlayersSuffix = " | " + Groups.player.size() + " Players";
             }
         }else{
             if(ui.editor != null && ui.editor.isShown()){
                 uiState = "In Editor";
-            }else if(ui.planet != null && ui.planet.isShown()){
+            }else if(ui.planet != null && ui.planet.isShown()) {
                 uiState = "In Launch Selection";
+            }else if(ui.join != null && ui.join.isShown()){
+                uiState = "In Server Selection";
             }else{
                 uiState = "In Menu";
             }
@@ -317,15 +320,14 @@ public class DesktopLauncher extends ClientLauncher{
             if(inGame){
                 presence.state = gameMode + gamePlayersSuffix;
                 presence.details = gameMapWithWave;
-                if(state.rules.waves){
-                    presence.largeImageText = "Wave " + state.wave;
-                }
             }else{
                 presence.state = uiState;
             }
 
             presence.largeImageKey = "logo";
-            presence.largeImageText = "Genshindustry " + Version.buildString();
+            if(Version.build != -1) {
+                presence.largeImageText = "Genshindustry \"" + Version.codename + "\" v" + Version.versionNumber;
+            }
 
             try{
                 DiscordRPC.send(presence);
@@ -359,7 +361,7 @@ public class DesktopLauncher extends ClientLauncher{
         return super.getUUID();
     }
 
-    private static void message(String message){
+    private static void errorMessage(String message){
         SDL.SDL_ShowSimpleMessageBox(SDL.SDL_MESSAGEBOX_ERROR, "ehe te nandayo", message);
     }
 }
