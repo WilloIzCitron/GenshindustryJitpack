@@ -53,12 +53,12 @@ public class ChatFragment extends Table{
                 }
             }
 
-            return net.active() && ui.hudfrag.shown;
+            return ui.hudfrag.shown;
         });
 
         update(() -> {
 
-            if(net.active() && input.keyTap(Binding.chat) && (scene.getKeyboardFocus() == chatfield || scene.getKeyboardFocus() == null || ui.minimapfrag.shown()) && !ui.scriptfrag.shown()){
+            if(input.keyTap(Binding.chat) && (scene.getKeyboardFocus() == chatfield || scene.getKeyboardFocus() == null || ui.minimapfrag.shown()) && !ui.scriptfrag.shown()){
                 toggle();
             }
 
@@ -72,7 +72,7 @@ public class ChatFragment extends Table{
                     historyPos--;
                     updateChat();
                 }
-                if(input.keyTap(Binding.chat_mode)){
+                if(net.active() && input.keyTap(Binding.chat_mode)){
                     nextMode();
                 }
                 scrollPos = (int)Mathf.clamp(scrollPos + input.axis(Binding.chat_scroll), 0, Math.max(0, messages.size - messagesShown));

@@ -16,7 +16,7 @@ public class Links{
     private static void createLinks(){
         links = new LinkEntry[]{
         new LinkEntry("discord", "https://discord.gg/mindustry", Icon.discord, Color.valueOf("7289da")),
-        new LinkEntry("changelog", "https://github.com/Anuken/Mindustry/releases", Icon.list, Pal.accent.cpy()),
+        new LinkEntry("changelog", "https://github.com/WilloizCitron/Genshindustry/releases", Icon.list, Pal.accent.cpy()),
         new LinkEntry("trello", "https://trello.com/b/aE2tcUwF", Icon.trello, Color.valueOf("026aa7")),
         new LinkEntry("wiki", "https://mindustrygame.github.io/wiki/", Icon.book, Color.valueOf("0f142f")),
         new LinkEntry("suggestions", "https://github.com/Anuken/Mindustry-Suggestions/issues/new/choose/", Icon.add, Color.valueOf("ebebeb")),
@@ -24,7 +24,7 @@ public class Links{
         new LinkEntry("itch.io", "https://anuke.itch.io/mindustry", Icon.itchio, Color.valueOf("fa5c5c")),
         new LinkEntry("google-play", "https://play.google.com/store/apps/details?id=io.anuke.mindustry", Icon.googleplay, Color.valueOf("689f38")),
         new LinkEntry("f-droid", "https://f-droid.org/packages/io.anuke.mindustry/", Icon.android, Color.valueOf("026aa7")),
-        new LinkEntry("github", "https://github.com/Anuken/Mindustry/", Icon.github, Color.valueOf("24292e")),
+        new LinkEntry("github", "https://github.com/WilloizCitron/Genshindustry/", Icon.github, Color.valueOf("24292e")),
         new LinkEntry("dev-builds", "https://github.com/Anuken/MindustryBuilds", Icon.githubSquare, Color.valueOf("fafbfc")),
         new LinkEntry("bug", report(), Icon.wrench, Color.valueOf("cbd97f"))
         };
@@ -54,7 +54,7 @@ public class Links{
     }
 
     private static String report(){
-        return "https://github.com/Anuken/Mindustry/issues/new?assignees=&labels=bug&body=" +
+        return "https://github.com/WilloizCitron/Genshindustry/issues/new?assignees=&labels=bug&body=" +
         Strings.encode(Strings.format(
         """
         **Platform**: `@`
@@ -74,7 +74,7 @@ public class Links{
         ---
                     
         *Place an X (no spaces) between the brackets to confirm that you have read the line below.*
-        - [ ] **I have updated to the latest release (https://github.com/Anuken/Mindustry/releases) to make sure my issue has not been fixed.**
+        - [ ] **I have updated to the latest release (https://github.com/WilloizCitron/Genshindustry/releases) to make sure my issue has not been fixed.**
         - [ ] **I have searched the closed and open issues to make sure that this problem has not already been reported.**
         """,
         OS.isAndroid ? "Android " + Core.app.getVersion() : (OS.osName + " x" + OS.osArchBits),

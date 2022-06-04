@@ -31,13 +31,13 @@ public class UnitTypes{
     //region standard
 
     //mech
-    public static @EntityDef({Unitc.class, Mechc.class}) UnitType mace, dagger, crawler, fortress, scepter, reign, vela;
+    public static @EntityDef({Unitc.class, Mechc.class}) UnitType mace, dagger, fortress, scepter, reign, vela;
 
     //mech, legacy
     public static @EntityDef(value = {Unitc.class, Mechc.class}, legacy = true) UnitType nova, pulsar, quasar;
 
     //legs
-    public static @EntityDef({Unitc.class, Legsc.class}) UnitType corvus, atrax,
+    public static @EntityDef({Unitc.class, Legsc.class}) UnitType corvus, atrax, crawler,
     merui, cleroi, anthicus,
     tecta, collaris;
 
@@ -605,13 +605,34 @@ public class UnitTypes{
         crawler = new UnitType("crawler"){{
             aiController = SuicideAI::new;
 
-            speed = 1f;
+            speed = 0.5f;
             hitSize = 8f;
             health = 200;
             mechSideSway = 0.25f;
             range = 40f;
             ammoType = new ItemAmmoType(Items.coal);
+            legStraightness = 0.3f;
+            stepShake = 0f;
 
+            legCount = 4;
+            legLength = 7f;
+            lockLegBase = true;
+            legContinuousMove = true;
+            legExtension = 2f;
+            legBaseOffset = 3f;
+            legMaxLength = 1.1f;
+            legMinLength = 0.5f;
+            legLengthScl = 0.99f;
+            legForwardScl = 1.1f;
+            legGroupSize = 3;
+            rippleScale = 0.01f;
+
+            legMoveSpace = 1f;
+            allowLegStep = true;
+            hovering = false;
+            legPhysicsLayer = true;
+
+            shadowElevation = 0.3f;
             weapons.add(new Weapon(){{
                 shootOnDeath = true;
                 reload = 24f;
