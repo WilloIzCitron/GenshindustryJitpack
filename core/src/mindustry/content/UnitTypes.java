@@ -624,6 +624,7 @@ public class UnitTypes{
             legMinLength = 0.5f;
             legLengthScl = 0.99f;
             legForwardScl = 1.1f;
+            legMoveSpace = 1.0f;
             legGroupSize = 3;
             rippleScale = 0.01f;
 

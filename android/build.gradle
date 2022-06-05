@@ -7,7 +7,7 @@ buildscript{
     }
 
     dependencies{
-        classpath 'com.android.tools.build:gradle:7.0.2'
+        classpath 'com.android.tools.build:gradle:7.0.3'
     }
 }
 
@@ -30,7 +30,7 @@ task deploy(type: Copy){
 
 android{
     buildToolsVersion '30.0.3'
-    compileSdkVersion 30
+    compileSdkVersion 31
     sourceSets{
         main{
             manifest.srcFile 'AndroidManifest.xml'
@@ -54,10 +54,10 @@ android{
         Integer vcode = props['androidBuildCode']?.toInteger() ?: 1
         def versionNameResult = "$versionNumber-$versionType-${getBuildVersion().replace(" ", "-")}"
 
-        applicationId "com.willoizcitron.genshindustry"
+        applicationId "io.anuke.mindustry"
         minSdkVersion 14
-        targetSdkVersion 30
-        
+        targetSdkVersion 31
+
         versionName versionNameResult
         versionCode = vcode
 
@@ -138,7 +138,7 @@ task copyAndroidNatives(){
 }
 
 task run(type: Exec){
-    commandLine "${findSdkDir()}/platform-tools/adb", 'shell', 'am', 'start', '-n', 'com.willoizcitron.genshindustry/mindustry.android.AndroidLauncher'
+    commandLine "${findSdkDir()}/platform-tools/adb", 'shell', 'am', 'start', '-n', 'io.anuke.mindustry/mindustry.android.AndroidLauncher'
 }
 
 if(!project.ext.hasSprites()){
