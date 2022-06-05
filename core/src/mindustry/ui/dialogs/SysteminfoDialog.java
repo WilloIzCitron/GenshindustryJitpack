@@ -6,11 +6,14 @@ import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import arc.struct.*;
 import arc.util.Strings;
+import mindustry.ai.ControlPathfinder;
 import mindustry.core.*;
 import mindustry.gen.*;
 
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
+
+import java.util.*;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
@@ -83,6 +86,14 @@ public class SysteminfoDialog extends Dialog{
 
             });
             t.button(Icon.left, this::hide).center();
+            //make ram updates every second
+            Timer timer = new Timer();
+            timer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    totalram = Runtime.getRuntime().totalMemory();
+                }
+            }, 0, 1000);
         });
 
     }

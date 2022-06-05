@@ -231,7 +231,6 @@ public class MenuRenderer implements Disposable{
         batch.endDraw();
 
         drawFlyers();
-        drawFlyers();
 
         Draw.proj(mat);
         Draw.color(0f, 0f, 0f, darkness);

@@ -99,9 +99,9 @@ public class AboutDialog extends BaseDialog{
         dialog.addCloseButton();
         Texture icon = new Texture("icons/icon_64.png");
         TextureRegion iconloaded = new TextureRegion(icon);
-        dialog.cont.image(iconloaded).width(64f).height(64f).left().setBounds(0, 0, iconloaded.width + 12, iconloaded.height);
+        dialog.cont.image(iconloaded).width(64f).height(64f).center().setBounds(0, 0, iconloaded.width + 12, iconloaded.height);
         dialog.cont.row();
-        dialog.cont.add("Genshindustry\n\""+ Version.codename+ "\" build "+Version.build+" v"+Version.versionNumber).left();
+        dialog.cont.add("Genshindustry\n\""+ Version.codename+ "\" build "+Version.build+" v"+Version.versionNumber).center();
         dialog.cont.row();
         dialog.cont.add("@credits.text").fillX().wrap().get().setAlignment(Align.center);
         dialog.cont.row();
