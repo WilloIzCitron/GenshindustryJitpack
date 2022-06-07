@@ -32,16 +32,16 @@ task incrementConfig {
     props.store(vfile.newWriter(), null)
 }
 
-    dependencies{
-        implementation project(":core")
+dependencies{
+    implementation project(":core")
 
-        implementation arcModule("natives:natives-ios")
-        implementation arcModule("natives:natives-freetype-ios")
-        implementation arcModule("backends:backend-robovm")
+    implementation arcModule("natives:natives-ios")
+    implementation arcModule("natives:natives-freetype-ios")
+    implementation arcModule("backends:backend-robovm")
 
-        compileOnly project(":annotations")
-    }
+    compileOnly project(":annotations")
 }
+
 
 sourceSets.main.java.srcDirs = ["src/"]
 
