@@ -298,15 +298,15 @@ public class DesktopLauncher extends ClientLauncher{
 
 
         if(inGame){
+            if(state.map.custom) {
+                uiSmallIcon = "custom";
+            }else if (Vars.state.rules.sector.planet == serpulo && Vars.state.rules.sector != null) {
+                uiSmallIcon = "serpulo";
+            } else if (Vars.state.rules.sector.planet == erekir && Vars.state.rules.sector != null) {
+                uiSmallIcon = "erekir";
+            }
             gameMapWithWave = Strings.capitalize(Strings.stripColors(state.map.name()));
 
-            if(Vars.state.rules.sector != null) {
-                if (Vars.state.rules.sector.planet == serpulo) {
-                    uiSmallIcon = "serpulo";
-                } else if (Vars.state.rules.sector.planet == erekir) {
-                    uiSmallIcon = "erekir";
-                }
-            }
             if(state.rules.waves){
                 gameMapWithWave += " | Wave " + state.wave;
             }
