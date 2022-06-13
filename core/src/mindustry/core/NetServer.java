@@ -555,11 +555,11 @@ public class NetServer implements ApplicationListener{
         if(!player.con.hasDisconnected){
             if(player.con.hasConnected){
                 Events.fire(new PlayerLeave(player));
-                if(Config.showConnectMessages.bool()) Call.sendMessage("[accent]" + player.name + "[accent] has disconnected.");
+                if(Config.showConnectMessages.bool()) Call.sendMessage("[accent]" + player.name + "[accent] has left the server.");
                 Call.playerDisconnect(player.id());
             }
 
-            String message = Strings.format("&lb@&fi&lk has disconnected. [&lb@&fi&lk] (@)", player.plainName(), player.uuid(), reason);
+            String message = Strings.format("&lb@&fi&lk has has left the server. [&lb@&fi&lk] (@)", player.plainName(), player.uuid(), reason);
             if(Config.showConnectMessages.bool()) info(message);
         }
 
@@ -821,8 +821,8 @@ public class NetServer implements ApplicationListener{
         player.con.hasConnected = true;
 
         if(Config.showConnectMessages.bool()){
-            Call.sendMessage("[accent]" + player.name + "[accent] has connected.");
-            String message = Strings.format("&lb@&fi&lk has connected. &fi&lk[&lb@&fi&lk]", player.plainName(), player.uuid());
+            Call.sendMessage("[accent]" + player.name + "[accent] joined the server.");
+            String message = Strings.format("&lb@&fi&lk joined the server. &fi&lk[&lb@&fi&lk]", player.plainName(), player.uuid());
             info(message);
         }
 

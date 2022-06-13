@@ -13,13 +13,17 @@ import arc.scene.ui.layout.*;
 import arc.util.*;
 import mindustry.*;
 import mindustry.core.*;
+import mindustry.entities.Predict;
+import mindustry.entities.Units;
 import mindustry.entities.units.*;
 import mindustry.game.EventType.*;
 import mindustry.game.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
+import mindustry.type.UnitType;
 import mindustry.ui.*;
 import mindustry.world.*;
+import mindustry.world.blocks.ControlBlock;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
@@ -47,6 +51,11 @@ public class DesktopInput extends InputHandler{
     public long selectMillis = 0;
     /** Previously selected tile. */
     public Tile prevSelected;
+
+    public boolean manualShooting = true;
+
+    @Nullable
+    public Teamc target;
 
     boolean showHint(){
         return ui.hudfrag.shown && Core.settings.getBool("hints") && selectPlans.isEmpty() &&

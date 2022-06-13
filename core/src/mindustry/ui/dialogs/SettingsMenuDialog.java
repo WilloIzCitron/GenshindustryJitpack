@@ -260,6 +260,10 @@ public class SettingsMenuDialog extends BaseDialog{
     public void addCategory(String name, Cons<SettingsTable> builder){
         addCategory(name, (Drawable)null, builder);
     }
+    
+    public Seq<SettingsCategory> getCategories(){
+        return categories;
+    }
 
     void rebuildMenu(){
         menu.clearChildren();
@@ -277,7 +281,7 @@ public class SettingsMenuDialog extends BaseDialog{
             menu.button("@settings.controls", Icon.move, style, isize, ui.controls::show).marginLeft(marg).row();
         }
         menu.button("@settings.systeminfo", Icon.info, style, isize, ui.systeminfo::show).marginLeft(marg).row();
-
+        menu.button("@settings.easteregg", Icon.eye, style, isize, ui.easterEgg::show).marginLeft(marg).row();
         menu.button("@settings.data", Icon.save, style, isize, () -> dataDialog.show()).marginLeft(marg).row();
 
         int i = 3;
@@ -357,6 +361,10 @@ public class SettingsMenuDialog extends BaseDialog{
                     platform.updateLobby();
                 });
             }
+        }
+
+        if(!mobile){
+            game.checkPref("console", false);
         }
 
         int[] lastUiScale = {settings.getInt("uiscale", 100)};
@@ -483,6 +491,10 @@ public class SettingsMenuDialog extends BaseDialog{
 
         graphics.checkPref("skipcoreanimation", false);
         graphics.checkPref("hidedisplays", false);
+        graphics.row();
+        graphics.add("Trail Settings (Restart Required for Changes)");
+        graphics.sliderPref("traillength", 5, 0, 8, i -> i < 0 ? "Normal" : (i) + "px");
+        graphics.checkPref("showtrails", false);
 
         if(!mobile){
             Core.settings.put("swapdiagonal", false);

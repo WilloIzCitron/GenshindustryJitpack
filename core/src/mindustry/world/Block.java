@@ -113,7 +113,6 @@ public class Block extends UnlockableContent implements Senseable{
     /** whether to draw a rotation arrow - this does not apply to lines of blocks */
     public boolean drawArrow = true;
     /** whether to draw the team corner by default */
-
     public boolean drawTeamOverlay = true;
     /** for static blocks only: if true, tile data() is saved in world data. */
     public boolean saveData;
@@ -167,6 +166,10 @@ public class Block extends UnlockableContent implements Senseable{
     public float baseExplosiveness = 0f;
     /** bullet that this block spawns when destroyed */
     public @Nullable BulletType destroyBullet = null;
+    /** whether cracks are drawn when this block is damaged */
+    public boolean drawCracks = true;
+    /** whether rubble is created when this block is destroyed */
+    public boolean createRubble = true;
     /** whether this block can be placed on edges of liquids. */
     public boolean floating = false;
     /** multiblock size */
@@ -1287,7 +1290,7 @@ public class Block extends UnlockableContent implements Senseable{
             }
         }
 
-        var editorBase = Core.atlas.getPixmap(fullIcon);
+        PixmapRegion editorBase;
 
         if(gen.length > 1){
             Pixmap base = Core.atlas.getPixmap(gen[0]).crop();
@@ -1301,6 +1304,8 @@ public class Block extends UnlockableContent implements Senseable{
             packer.add(PageType.main, "block-" + name + "-full", base);
 
             editorBase = new PixmapRegion(base);
+        }else{
+            editorBase = Core.atlas.getPixmap(gen[0]);
         }
 
         packer.add(PageType.editor, name + "-icon-editor", editorBase);

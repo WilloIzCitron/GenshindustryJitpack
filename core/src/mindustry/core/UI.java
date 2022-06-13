@@ -40,7 +40,9 @@ public class UI implements ApplicationListener, Loadable{
     public MenuFragment menufrag;
     public HudFragment hudfrag;
     public ChatFragment chatfrag;
-    public ScriptConsoleFragment scriptfrag;
+    public ConsoleFragment consolefrag;
+    public SysteminfoDialog systeminfo;
+    public EasterEggDialog easterEgg;
     public MinimapFragment minimapfrag;
     public PlayerListFragment listfrag;
     public LoadingFragment loadfrag;
@@ -59,7 +61,6 @@ public class UI implements ApplicationListener, Loadable{
     public PausedDialog paused;
     public SettingsMenuDialog settings;
     public KeybindDialog controls;
-    public SysteminfoDialog systeminfo;
     public MapEditorDialog editor;
     public LanguageDialog language;
     public BansDialog bans;
@@ -173,12 +174,13 @@ public class UI implements ApplicationListener, Loadable{
         minimapfrag = new MinimapFragment();
         listfrag = new PlayerListFragment();
         loadfrag = new LoadingFragment();
-        scriptfrag = new ScriptConsoleFragment();
+        consolefrag = new ConsoleFragment();
+        systeminfo = new SysteminfoDialog();
+        easterEgg = new EasterEggDialog();
 
         picker = new ColorPicker();
         editor = new MapEditorDialog();
         controls = new KeybindDialog();
-        systeminfo = new SysteminfoDialog();
         restart = new GameOverDialog();
         join = new JoinDialog();
         discord = new DiscordDialog();
@@ -219,7 +221,7 @@ public class UI implements ApplicationListener, Loadable{
         chatfrag.build(hudGroup);
         minimapfrag.build(hudGroup);
         listfrag.build(hudGroup);
-        scriptfrag.build(hudGroup);
+        consolefrag.build(hudGroup);
         loadfrag.build(group);
         new FadeInFragment().build(group);
     }
@@ -597,8 +599,9 @@ public class UI implements ApplicationListener, Loadable{
     }
 
     public static String formatAmount(long number){
-        //prevent overflow
-        if(number == Long.MIN_VALUE) number ++;
+        //prevent things like bars displaying erroneous representations of casted infinities
+        if(number == Long.MAX_VALUE) return "∞";
+        if(number == Long.MIN_VALUE) return "-∞";
 
         long mag = Math.abs(number);
         String sign = number < 0 ? "-" : "";

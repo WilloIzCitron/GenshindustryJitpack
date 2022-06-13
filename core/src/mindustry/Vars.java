@@ -170,8 +170,7 @@ public class Vars implements Loadable{
     public static boolean headless;
     /** whether steam is enabled for this game */
     public static boolean steam;
-    /** whether typing into the console is enabled - developers only TODO change */
-    public static boolean enableConsole = true;
+
     /** whether to clear sector saves when landing */
     public static boolean clearSectors = false;
     /** whether any light rendering is enabled */
@@ -216,7 +215,7 @@ public class Vars implements Loadable{
     public static Locale[] locales;
 
     //the main executor will only have at most [cores] number of threads active
-    public static ExecutorService mainExecutor = Threads.cachedExecutor(1, OS.cores, true);
+    public static ExecutorService mainExecutor = Threads.executor("Main Executor", OS.cores);
 
     public static FileTree tree = new FileTree();
     public static Net net;
@@ -371,7 +370,7 @@ public class Vars implements Loadable{
 
                 result = tags[level.ordinal()] + " " + result;
 
-                if(!headless && (ui == null || ui.scriptfrag == null)){
+                if(!headless && (ui == null || ui.consolefrag == null)){
                     logBuffer.add(result);
                 }else if(!headless){
                     if(!OS.isWindows){
@@ -380,12 +379,12 @@ public class Vars implements Loadable{
                         }
                     }
 
-                    ui.scriptfrag.addMessage(Log.removeColors(result));
+                    ui.consolefrag.addMessage(Log.removeColors(result));
                 }
             }
         };
 
-        Events.on(ClientLoadEvent.class, e -> logBuffer.each(ui.scriptfrag::addMessage));
+        Events.on(ClientLoadEvent.class, e -> logBuffer.each(ui.consolefrag::addMessage));
 
         loadedLogger = true;
     }

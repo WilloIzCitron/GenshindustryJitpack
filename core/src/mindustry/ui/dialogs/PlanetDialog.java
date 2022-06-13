@@ -158,6 +158,7 @@ public class PlanetDialog extends BaseDialog implements PlanetInterfaceRenderer{
                 lastZoom = zoom;
             }
         });
+        hidden(() -> platform.updateRPC());
 
         shown(this::setup);
     }

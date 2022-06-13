@@ -15,6 +15,7 @@ import arc.util.Log.*;
 import arc.util.serialization.*;
 import com.codedisaster.steamworks.*;
 import mindustry.*;
+import mindustry.content.Planets;
 import mindustry.core.*;
 import mindustry.desktop.steam.*;
 import mindustry.game.EventType.*;
@@ -27,6 +28,7 @@ import mindustry.type.*;
 import java.io.*;
 
 import static mindustry.Vars.*;
+import static mindustry.content.Planets.*;
 
 public class DesktopLauncher extends ClientLauncher{
     public final static long discordID = 979213401190441002L;
@@ -290,11 +292,21 @@ public class DesktopLauncher extends ClientLauncher{
         String gameMode = "";
         String gamePlayersSuffix = "";
         String uiState = "";
-        String uiDetails = "";
+        String uiSmallIcon = "";
+        String uiDetail = "";
+
+
 
         if(inGame){
             gameMapWithWave = Strings.capitalize(Strings.stripColors(state.map.name()));
 
+            if(Vars.state.rules.sector != null) {
+                if (Vars.state.rules.sector.planet == serpulo) {
+                    uiSmallIcon = "serpulo";
+                } else if (Vars.state.rules.sector.planet == erekir) {
+                    uiSmallIcon = "erekir";
+                }
+            }
             if(state.rules.waves){
                 gameMapWithWave += " | Wave " + state.wave;
             }
@@ -320,6 +332,7 @@ public class DesktopLauncher extends ClientLauncher{
             if(inGame){
                 presence.state = gameMode + gamePlayersSuffix;
                 presence.details = gameMapWithWave;
+                presence.smallImageKey = uiSmallIcon;
             }else{
                 presence.state = uiState;
             }
