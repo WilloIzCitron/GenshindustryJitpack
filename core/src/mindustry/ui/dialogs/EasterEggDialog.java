@@ -45,6 +45,8 @@ private BaseDialog EasterEgg;
                             UnitTypes.dagger.speed = 2f;
                             UnitTypes.dagger.weapons.remove(0);
                             UnitTypes.dagger.weapons.add(UnitTypes.reign.weapons.get(0));
+                            UnitTypes.dagger.weapons.remove(1);
+                            UnitTypes.dagger.weapons.add(UnitTypes.reign.weapons.get(1));
                         }
                 }).width(300f).height(40f).padBottom(10f).center();
             });
