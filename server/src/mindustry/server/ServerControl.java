@@ -815,9 +815,9 @@ public class ServerControl implements ApplicationListener{
 
             if(target != null){
                 if(add){
-                    netServer.admins.adminPlayer(target.id, target.adminUsid);
+                    netServer.admins.adminPlayer(target.id, playert == null ? target.adminUsid : playert.usid());
                 }else{
-                    netServer.admins.unAdminPlayer(target.idplayert == null ? target.adminUsid : playert.usid());
+                    netServer.admins.unAdminPlayer(target.id);
                 }
                 if(playert != null) playert.admin = add;
                 info("Changed admin status of player: @", target.plainLastName());

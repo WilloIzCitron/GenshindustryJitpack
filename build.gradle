@@ -35,7 +35,7 @@ allprojects{
 
     ext{
         versionNumber = '7'
-        version = "1.3b1"
+        version = "1.3b2"
         buildversion = "136"
         if(!project.hasProperty("versionModifier")) versionModifier = 'beta'
         if(!project.hasProperty("versionType")) versionType = 'official'
