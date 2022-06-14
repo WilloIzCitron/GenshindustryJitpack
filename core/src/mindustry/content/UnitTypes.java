@@ -2367,6 +2367,8 @@ public class UnitTypes{
             hitSize = 8f;
             alwaysUnlocked = true;
 
+            fogRadius = 0f;
+
             weapons.add(new Weapon("small-basic-weapon"){{
                 reload = 17f;
                 x = 2.75f;
@@ -2403,6 +2405,8 @@ public class UnitTypes{
             hitSize = 9f;
             faceTarget = false;
             lowAltitude = true;
+
+            fogRadius = 0f;
 
             weapons.add(new Weapon("small-mount-weapon"){{
                 top = false;
@@ -2442,6 +2446,8 @@ public class UnitTypes{
             health = 220f;
             engineOffset = 6f;
             hitSize = 11f;
+
+            fogRadius = 0f;
 
             weapons.add(new Weapon("small-mount-weapon"){{
                 top = false;
