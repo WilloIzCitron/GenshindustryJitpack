@@ -3,6 +3,7 @@ package mindustry.ui.dialogs;
 import arc.audio.Music;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
+import mindustry.content.UnitTypes;
 import mindustry.gen.*;
 import mindustry.ui.*;
 import mindustry.audio.SoundControl;
@@ -39,6 +40,11 @@ private BaseDialog EasterEgg;
                         if (s.equals("Kobo Kanaeru")) {
                             Musics.menu.setVolume(0f);
                             Musics.mantrahujan.play();
+                        }
+                        if(s.equals("god dagger")) {
+                            UnitTypes.dagger.speed = 2f;
+                            UnitTypes.dagger.weapons.remove(0);
+                            UnitTypes.dagger.weapons.add(UnitTypes.reign.weapons.get(0));
                         }
                 }).width(300f).height(40f).padBottom(10f).center();
             });
