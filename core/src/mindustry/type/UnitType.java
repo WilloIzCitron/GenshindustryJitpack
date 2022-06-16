@@ -263,9 +263,9 @@ public class UnitType extends UnlockableContent{
     /** color for inner portions of engines */
     public Color engineColorInner = Color.white;
     /** if true, this shows the trails */
-    public boolean showTrails = settings.getBool("showtrails");
+    public boolean showTrails = Core.settings.getBool("showtrails");
     /** length of engine trail (if flying) or wave trail (if naval) */
-    public int trailLength = settings.getInt("traillength", 5);
+    public int trailLength = Core.settings.getInt("traillength", 5);
     /** override for engine trail color */
     public @Nullable Color trailColor;
 

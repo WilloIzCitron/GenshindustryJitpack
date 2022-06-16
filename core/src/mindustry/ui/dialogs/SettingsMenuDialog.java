@@ -493,7 +493,7 @@ public class SettingsMenuDialog extends BaseDialog{
         graphics.checkPref("hidedisplays", false);
         graphics.row();
         graphics.add("Trail Settings (Restart Required for Changes)");
-        graphics.sliderPref("traillength", 5, 0, 8, i -> i < 0 ? "Normal" : (i) + "px");
+        graphics.sliderPref("traillength", 5, 0, 8, i -> i == 0 ? "Normal" : (i) + "px");
         graphics.checkPref("showtrails", false);
 
         if(!mobile){
