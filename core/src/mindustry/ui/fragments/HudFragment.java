@@ -159,7 +159,7 @@ public class HudFragment{
                     });
 
                     select.button(Icon.chat, style,() -> {
-                        if(mobile){
+                        if(net.active() && mobile){
                             if(ui.chatfrag.shown()){
                                 ui.chatfrag.hide();
                             }else{
@@ -171,7 +171,7 @@ public class HudFragment{
                             ui.database.show();
                         }
                     }).name("chat").update(i -> {
-                        if(mobile){
+                        if(net.active() && mobile){
                             i.getStyle().imageUp = Icon.chat;
                         }else if(state.isCampaign()){
                             i.getStyle().imageUp = Icon.tree;
@@ -220,14 +220,12 @@ public class HudFragment{
 
                 //table with button to skip wave
                 s.button(Icon.play, rightStyle, 30f, () -> {
-                    if(!canSkipWave()) showToast("Keep Calm, You can't skip waves yet.");
-                    else if(net.client() && player.admin) Call.adminRequest(player, AdminAction.wave);
-                    else logic.skipWave();
-                }).growY().fillX().right().width(40f).name("skip");
-
-                s.row();
-                s.add("Player: " +player.coloredName()).color(Color.white).growX().grow();
-
+                    if(net.client() && player.admin){
+                        Call.adminRequest(player, AdminAction.wave);
+                    }else{
+                        logic.skipWave();
+                    }
+                }).growY().fillX().right().width(40f).disabled(b -> !canSkipWave()).name("skip").get().toBack();
             }).width(dsize * 5 + 4f).name("statustable");
 
             wavesMain.row();

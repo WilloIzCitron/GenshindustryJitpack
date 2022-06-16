@@ -55,7 +55,6 @@ public class MapPlayDialog extends BaseDialog{
         selmode.add("@level.mode").colspan(2);
         selmode.row();
 
-
         selmode.table(Tex.button, modes -> {
             int i = 0;
             for(Gamemode mode : Gamemode.all){
@@ -68,7 +67,6 @@ public class MapPlayDialog extends BaseDialog{
                 if(i++ % 2 == 1) modes.row();
             }
         });
-
 
         selmode.button("?", this::displayGameModeHelp).width(50f).fillY().padLeft(18f);
 

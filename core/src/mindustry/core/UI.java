@@ -175,8 +175,6 @@ public class UI implements ApplicationListener, Loadable{
         listfrag = new PlayerListFragment();
         loadfrag = new LoadingFragment();
         consolefrag = new ConsoleFragment();
-        systeminfo = new SysteminfoDialog();
-        easterEgg = new EasterEggDialog();
 
         picker = new ColorPicker();
         editor = new MapEditorDialog();

@@ -47,9 +47,7 @@ public class LanguageDialog extends BaseDialog{
     "zh_TW", "正體中文",
     "ja", "日本語",
     "ko", "한국어",
-    "router", "router",
-    "paimon", "Paimon",
-    "siuuu", "Christiano Ronaldo"
+    "router", "router"
     );
 
     private Locale lastLocale;

@@ -37,7 +37,6 @@ import mindustry.world.blocks.units.*;
 import mindustry.world.consumers.*;
 import mindustry.world.meta.*;
 
-import static arc.Core.settings;
 import static arc.graphics.g2d.Draw.*;
 import static mindustry.Vars.*;
 
