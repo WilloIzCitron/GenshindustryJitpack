@@ -31,6 +31,7 @@ public class LoadRenderer implements Disposable{
 
     private float testprogress = 0f;
     private StringBuilder assetText = new StringBuilder();
+    private Bar[] bars;
     private Mesh mesh = MeshBuilder.buildHex(colorRed, 2, true, 1f);
     private Camera3D cam = new Camera3D();
     private int lastLength = -1;
@@ -39,6 +40,7 @@ public class LoadRenderer implements Disposable{
     private BloomFilter bloom;
     private boolean renderStencil = true;
     private long lastFrameTime;
+
     {
         //some systems don't support rgba8888 w/ a stencil buffer
         try{
@@ -55,6 +57,19 @@ public class LoadRenderer implements Disposable{
         //vignetting is probably too much
         //fx.addEffect(new VignettingFilter(false));
         fx.addEffect(bloom = new BloomFilter());
+
+        bars = new Bar[]{
+            new Bar("s_proc#", OS.cores / 16f, OS.cores < 4),
+            new Bar("c_aprog", () -> assets != null, () -> assets.getProgress(), () -> false),
+            new Bar("g_vtype", graphics.getGLVersion().type == GlType.GLES ? 0.5f : 1f, graphics.getGLVersion().type == GlType.GLES),
+            new Bar("s_mem#", () -> true, () -> Core.app.getJavaHeap() / 1024f / 1024f / 200f, () -> Core.app.getJavaHeap() > 1024 * 1024 * 110),
+            new Bar("v_ver#", () -> Version.build != 0, () -> Version.build == -1 ? 0.3f : (Version.build - 103f) / 10f, () -> !Version.modifier.equals("release")),
+            new Bar("s_osv", OS.isWindows ? 0.35f : OS.isLinux ? 0.9f : OS.isMac ? 0.5f : 0.2f, OS.isMac),
+            new Bar("v_worlds#", () -> Vars.control != null && Vars.control.saves != null, () -> Vars.control.saves.getSaveSlots().size / 30f, () -> Vars.control.saves.getSaveSlots().size > 30),
+            new Bar("c_datas#", () -> settings.keySize() > 0, () -> settings.keySize() / 50f, () -> settings.keySize() > 20),
+            new Bar("v_alterc", () -> Vars.mods != null, () -> (Vars.mods.list().size + 1) / 6f, () -> Vars.mods.list().size > 0),
+            new Bar("g_vcomp#", (graphics.getGLVersion().majorVersion + graphics.getGLVersion().minorVersion / 10f) / 4.6f, !graphics.getGLVersion().atLeast(3, 2)),
+        };
     }
 
     @Override
@@ -165,6 +180,10 @@ public class LoadRenderer implements Disposable{
         float mpad = 100f * s;
 
         Draw.color(color);
+        Lines.stroke(stroke);
+
+        Lines.poly(w/2, h/2, 4, rad);
+        Lines.poly(w/2, h/2, 4, rad2);
 
         if(assets.isLoaded("tech") && renderStencil){
             Font font = assets.get("tech");
@@ -211,14 +230,56 @@ public class LoadRenderer implements Disposable{
                     Gl.clear(Gl.stencilBufferBit);
                     Draw.beginStencil();
 
+                    Fill.poly(floats);
+
                     Draw.beginStenciled();
 
                     GlyphLayout layout = GlyphLayout.obtain();
                     float pad = 4;
 
                     if(panei == 0){
+                        layout.setText(font, assetText);
+                        font.draw(assetText, minx + pad, maxy - pad + Math.max(0, layout.height - (maxy - miny)));
                     }else if(panei == 1){
                         float height = maxy - miny;
+                        float barpad = s * 8f;
+
+                        int barsUsed = Math.min((int)((height - barpad) / (font.getLineHeight() * 1.4f)), bars.length);
+
+                        float barspace = (height - barpad) / barsUsed;
+                        float barheight = barspace * 0.8f;
+
+                        for(int i = 0; i < barsUsed; i++){
+                            Bar bar = bars[i];
+                            if(bar.valid()){
+                                Draw.color(bar.red() ? colorRed : color);
+                                float y = maxy - i * barspace - barpad - barheight;
+                                float width = Mathf.clamp(bar.value());
+                                float baseWidth = Core.graphics.isPortrait() ? maxx - minx : (maxx - minx) - (maxy - y) - barpad * 2f - s * 4;
+                                float cx = minx + barpad, cy = y, topY = cy + barheight, botY = cy;
+
+                                Lines.square(cx + barheight / 2f, botY + barheight / 2f, barheight / 2f);
+
+                                Fill.quad(
+                                cx + barheight, cy,
+                                cx + barheight, topY,
+                                cx + width * baseWidth + barheight, topY,
+                                cx + width * baseWidth, botY
+                                );
+
+                                Draw.color(Color.black);
+
+                                Fill.quad(
+                                cx + width * baseWidth + barheight, topY,
+                                cx + width * baseWidth, botY,
+                                cx + baseWidth, botY,
+                                cx + baseWidth + barheight, topY);
+
+                                font.setColor(Color.black);
+                                layout.setText(font, bar.text);
+                                font.draw(bar.text, cx + barheight * 1.5f, botY + barheight / 2f + layout.height / 2f);
+                            }
+                        }
 
                         Draw.color(color);
                     }else if(panei == 2){
@@ -244,6 +305,7 @@ public class LoadRenderer implements Disposable{
                                 }else{
                                     Draw.color(dst);
                                 }
+                                Fill.square(cx, miny + j * barspace + barw/2f + barpad, barw/2f);
                             }
                         }
                         Draw.color(color);
@@ -262,19 +324,73 @@ public class LoadRenderer implements Disposable{
                         //planet + bars
                         if(!graphics.isPortrait()){
 
+                            String text = "<<ready>>";
+                            layout.setText(font, text);
+
                             //draw only when text fits
                             if(layout.width * 1.5f < vw){
+                                Lines.circle(cx, cy, vsize/2f);
+
                                 if(rw > 0 && rh > 0){
                                     Gl.viewport(viewportX + rx, viewportY + ry, rw, rh);
+
+                                    cam.position.set(2, 0, 2);
+                                    cam.resize(rw, rh);
+                                    cam.lookAt(0, 0, 0);
+                                    cam.fov = 42f;
+                                    cam.update();
+                                    Shaders.mesh.bind();
+                                    Shaders.mesh.setUniformMatrix4("u_proj", cam.combined.val);
+                                    mesh.render(Shaders.mesh, Gl.lines);
+
                                     //restore viewport
                                     Gl.viewport(viewportX, viewportY, viewportWidth, viewportHeight);
                                 }
+
+                                int points = 4;
+                                for(int i = 0; i < points; i++){
+                                    float ang = i * 360f / points + 45;
+                                    Fill.poly(cx + Angles.trnsx(ang, vrad), cy + Angles.trnsy(ang, vrad), 3, 20 * s, ang);
+                                }
+
+                                Draw.color(Color.black);
+                                Fill.rect(cx, cy, layout.width + 14f * s, layout.height + 14f * s);
+
+                                font.setColor(color);
+                                font.draw(text, cx - layout.width / 2f, cy + layout.height / 2f);
+
+                                Draw.color(color);
+
+                                Lines.square(cx, cy, vcont / 2f);
+
+                                Lines.line(vx, vy, vx, vy + vh);
 
 
                                 float pspace = 70f * s;
                                 int pcount = (int)(vh / pspace / 2) + 2;
                                 float pw = (vw - vcont) / 2f;
                                 float slope = pw / 2f;
+
+                                //side bars for planet
+                                for(int i : Mathf.signs){
+
+                                    float px = cx + i * (vcont / 2f + pw / 2f);
+                                    float xleft = px - pw / 2f, xright = px + pw / 2f;
+
+                                    for(int j = -2; j < pcount * 2; j++){
+                                        float py = vy + j * pspace * 2, ybot = py - slope, ytop = py + slope;
+                                        Fill.quad(
+                                        xleft, ybot,
+                                        xleft, ybot + pspace,
+                                        xright, ytop + pspace,
+                                        xright, ytop
+                                        );
+                                    }
+                                }
+                            }else{
+                                //X
+                                Lines.line(vx, vy, vx + vw, vy + vh);
+                                Lines.line(vx, vy + vh, vx + vw, vy);
                             }
 
                         }
@@ -356,8 +472,8 @@ public class LoadRenderer implements Disposable{
         if(assets.isLoaded("tech")){
             String name = assets.getCurrentLoading() != null ? assets.getCurrentLoading().fileName.toLowerCase() : "system";
 
-            String key = name.contains("script") ? "Loading Scripts..." : name.contains("content") ? "Loading Contents..." : name.contains("mod") ? "Loading Mods..." : name.contains("msav") ||
-                    name.contains("maps") ? "Loading Maps..." : name.contains("ogg") || name.contains("mp3") ? "Loading Sounds..." : name.contains("png") ? "Loading Images..." : "System Loading";
+            String key = name.contains("script") ? "scripts" : name.contains("content") ? "content" : name.contains("mod") ? "mods" : name.contains("msav") ||
+            name.contains("maps") ? "map" : name.contains("ogg") || name.contains("mp3") ? "sound" : name.contains("png") ? "image" : "system";
 
             Font font = assets.get("tech");
             font.getData().markupEnabled = true;
@@ -372,5 +488,37 @@ public class LoadRenderer implements Disposable{
 
         fx.applyEffects();
         fx.render();
+    }
+
+    static class Bar{
+        final Floatp value;
+        final Boolp red, valid;
+        final String text;
+
+        public Bar(String text, float value, boolean red){
+            this.value = () -> value;
+            this.red = () -> red;
+            this.valid = () -> true;
+            this.text = text;
+        }
+
+        public Bar(String text, Boolp valid, Floatp value, Boolp red){
+            this.valid = valid;
+            this.value = value;
+            this.red = red;
+            this.text = text;
+        }
+
+        boolean valid(){
+            return valid.get();
+        }
+
+        boolean red(){
+            return red.get();
+        }
+
+        float value(){
+            return Mathf.clamp(value.get());
+        }
     }
 }

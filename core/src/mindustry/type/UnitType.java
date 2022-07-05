@@ -73,6 +73,8 @@ public class UnitType extends UnlockableContent{
     riseSpeed = 0.08f,
     /** how fast this unit falls when not boosting */
     fallSpeed = 0.018f,
+    /** how many ticks it takes this missile to accelerate to full speed */
+    missileAccelTime = 0f,
     /** raw health amount */
     health = 200f,
     /** incoming damage is reduced by this amount */
@@ -262,10 +264,8 @@ public class UnitType extends UnlockableContent{
     public @Nullable Color engineColor = null;
     /** color for inner portions of engines */
     public Color engineColorInner = Color.white;
-    /** if true, this shows the trails */
-    public boolean showTrails = Core.settings.getBool("showtrails");
     /** length of engine trail (if flying) or wave trail (if naval) */
-    public int trailLength = Core.settings.getInt("traillength", 5);
+    public int trailLength = 0;
     /** override for engine trail color */
     public @Nullable Color trailColor;
 
@@ -472,6 +472,8 @@ public class UnitType extends UnlockableContent{
 
     }
 
+    public void killed(Unit unit){}
+
     public void landed(Unit unit){}
 
     public void display(Unit unit, Table table){
@@ -512,13 +514,24 @@ public class UnitType extends UnlockableContent{
             }
         }).growX();
 
-        if(unit.controller() instanceof LogicAI){
+        if(unit.controller() instanceof LogicAI ai){
             table.row();
             table.add(Blocks.microProcessor.emoji() + " " + Core.bundle.get("units.processorcontrol")).growX().wrap().left();
+            if(ai.controller != null && (Core.settings.getBool("mouseposition") || Core.settings.getBool("position"))){
+                table.row();
+                table.add("[lightgray](" + ai.controller.tileX() + ", " + ai.controller.tileY() + ")").growX().wrap().left();
+            }
             table.row();
             table.label(() -> Iconc.settings + " " + (long)unit.flag + "").color(Color.lightGray).growX().wrap().left();
+            if(net.active() && ai.controller != null && ai.controller.lastAccessed != null){
+                table.row();
+                table.add(Core.bundle.format("lastaccessed", ai.controller.lastAccessed)).growX().wrap().left();
+            }
+        }else if(net.active() && unit.lastCommanded != null){
+            table.row();
+            table.add(Core.bundle.format("lastcommanded", unit.lastCommanded)).growX().wrap().left();
         }
-        
+
         table.row();
     }
 
@@ -858,7 +871,6 @@ public class UnitType extends UnlockableContent{
 
         var toOutline = new Seq<TextureRegion>();
         getRegionsToOutline(toOutline);
-        boolean separateOutline = weapons.contains(w -> !w.top);
 
         for(var region : toOutline){
             if(region instanceof AtlasRegion atlas){
@@ -884,10 +896,15 @@ public class UnitType extends UnlockableContent{
                 makeOutline(PageType.main, packer, outlineTarget, alwaysCreateOutline && region == outlineTarget, outlineColor, outlineRadius);
             }
 
+            if(sample instanceof Crawlc){
+                for(int i = 0; i < segments; i++){
+                    makeOutline(packer, segmentRegions[i], name + "-segment-outline" + i, outlineColor, outlineRadius);
+                }
+            }
+
             for(Weapon weapon : weapons){
-                if(!weapon.name.isEmpty()){
-                    //TODO makeNew isn't really necessary here is it
-                    makeOutline(PageType.main, packer, weapon.region, separateOutline, outlineColor, outlineRadius);
+                if(!weapon.name.isEmpty() && (minfo.mod == null || weapon.name.startsWith(minfo.mod.name)) && !(!weapon.top && packer.isOutlined(weapon.name))){
+                    makeOutline(PageType.main, packer, weapon.region, !weapon.top, outlineColor, outlineRadius);
                 }
             }
         }
@@ -1113,7 +1130,7 @@ public class UnitType extends UnlockableContent{
         if(drawBody) drawOutline(unit);
         drawWeaponOutlines(unit);
         if(engineLayer > 0) Draw.z(engineLayer);
-        if(showTrails && trailLength > 0 && !naval && (unit.isFlying() || useEngineElevation)){
+        if(trailLength > 0 && !naval && (unit.isFlying() || !useEngineElevation)){
             drawTrail(unit);
         }
         if(engines.size > 0) drawEngines(unit);

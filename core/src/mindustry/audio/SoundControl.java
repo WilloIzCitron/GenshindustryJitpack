@@ -67,7 +67,7 @@ public class SoundControl{
         fade = 0f;
         ambientMusic = Seq.with(Musics.game1, Musics.game3, Musics.game6, Musics.game8, Musics.game9, Musics.fine);
         darkMusic = Seq.with(Musics.game2, Musics.game5, Musics.game7, Musics.game4);
-        bossMusic = Seq.with(Musics.boss1, Musics.boss2, Musics.boss3);
+        bossMusic = Seq.with(Musics.boss1, Musics.boss2, Musics.game2, Musics.game5);
 
         //setup UI bus for all sounds that are in the UI folder
         for(var sound : Core.assets.getAll(Sound.class, new Seq<>())){

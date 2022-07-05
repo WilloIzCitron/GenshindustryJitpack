@@ -170,7 +170,6 @@ public class Vars implements Loadable{
     public static boolean headless;
     /** whether steam is enabled for this game */
     public static boolean steam;
-
     /** whether to clear sector saves when landing */
     public static boolean clearSectors = false;
     /** whether any light rendering is enabled */
@@ -275,12 +274,14 @@ public class Vars implements Loadable{
 
             Arrays.sort(locales, Structs.comparing(LanguageDialog::getDisplayName, String.CASE_INSENSITIVE_ORDER));
             locales = Seq.with(locales).add(new Locale("router")).toArray(Locale.class);
-            locales = Seq.with(locales).add(new Locale("paimon")).toArray(Locale.class);
-            locales = Seq.with(locales).add(new Locale("siuuu")).toArray(Locale.class);
         }
 
         Version.init();
         CacheLayer.init();
+
+        if(!headless){
+            Log.info("[Mindustry] Version: @", Version.buildString());
+        }
 
         dataDirectory = settings.getDataDirectory();
         screenshotDirectory = dataDirectory.child("screenshots/");
@@ -471,14 +472,6 @@ public class Vars implements Loadable{
             //router
             if(locale.toString().equals("router")){
                 bundle.debug("router");
-            }
-
-            if(locale.toString().equals("paimon")){
-                bundle.debug("paimon");
-            }
-
-            if(locale.toString().equals("siuuu")){
-                bundle.debug("siuuu");
             }
         }
     }

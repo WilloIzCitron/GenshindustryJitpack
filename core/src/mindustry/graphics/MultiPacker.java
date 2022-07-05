@@ -3,12 +3,14 @@ package mindustry.graphics;
 import arc.graphics.*;
 import arc.graphics.Texture.*;
 import arc.graphics.g2d.*;
+import arc.struct.*;
 import arc.util.*;
 import arc.util.Log.*;
 import mindustry.*;
 
 public class MultiPacker implements Disposable{
     private PixmapPacker[] packers = new PixmapPacker[PageType.all.length];
+    private ObjectSet<String> outlined = new ObjectSet<>();
 
     public MultiPacker(){
         for(int i = 0; i < packers.length; i++){
@@ -46,6 +48,15 @@ public class MultiPacker implements Disposable{
                 i ++;
             }
         }
+    }
+
+    /** @return whether this image was not already outlined. */
+    public boolean registerOutlined(String named){
+        return outlined.add(named);
+    }
+
+    public boolean isOutlined(String name){
+        return outlined.contains(name);
     }
 
     public PixmapPacker getPacker(PageType type){
@@ -94,18 +105,18 @@ public class MultiPacker implements Disposable{
     //There are several pages for sprites.
     //main page (sprites.png) - all sprites for units, weapons, placeable blocks, effects, bullets, etc
     //environment page (sprites2.png) - all sprites for things in the environmental cache layer
-    //editor page (sprites3.png) - all sprites needed for rendering in the editor, including block icons and a few minor sprites
-    //rubble page - scorch textures for unit deaths & wrecks
-    //ui page (sprites5.png) - content icons, white icons, fonts and UI elements
+    //ui page (sprites3.png) - content icons, white icons, fonts and UI elements
+    //rubble page (sprites4.png) - scorch textures for unit deaths & wrecks
+    //editor page (sprites5.png) - all sprites needed for rendering in the editor, including block icons and a few minor sprites
     public enum PageType{
         //main page can be massive, but 8192 throws GL_OUT_OF_MEMORY on some GPUs and I can't deal with it yet.
         main(4096),
 
         //TODO stuff like this throws OOM on some devices
         environment(4096, 2048),
-        editor(4096, 2048),
+        ui(4096),
         rubble(4096, 2048),
-        ui(4096);
+        editor(4096, 2048);
 
         public static final PageType[] all = values();
 
