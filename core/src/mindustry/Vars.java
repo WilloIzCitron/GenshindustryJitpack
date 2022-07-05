@@ -274,6 +274,8 @@ public class Vars implements Loadable{
 
             Arrays.sort(locales, Structs.comparing(LanguageDialog::getDisplayName, String.CASE_INSENSITIVE_ORDER));
             locales = Seq.with(locales).add(new Locale("router")).toArray(Locale.class);
+            locales = Seq.with(locales).add(new Locale("paimon")).toArray(Locale.class);
+            locales = Seq.with(locales).add(new Locale("siuuu")).toArray(Locale.class);
         }
 
         Version.init();
@@ -470,8 +472,16 @@ public class Vars implements Loadable{
             Core.bundle = I18NBundle.createBundle(handle, locale);
 
             //router
-            if(locale.toString().equals("router")){
+            if(locale.toString().equals("router")) {
                 bundle.debug("router");
+            }
+
+            if(locale.toString().equals("paimon")){
+                bundle.debug("paimon");
+            }
+
+            if(locale.toString().equals("siuuu")){
+                bundle.debug("siuuu");
             }
         }
     }

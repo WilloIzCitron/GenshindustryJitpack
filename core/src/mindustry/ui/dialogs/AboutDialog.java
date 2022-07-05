@@ -2,10 +2,12 @@ package mindustry.ui.dialogs;
 
 import arc.*;
 import arc.graphics.*;
+import arc.graphics.g2d.TextureRegion;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import arc.struct.*;
 import arc.util.*;
+import mindustry.core.Version;
 import mindustry.game.EventType.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
@@ -95,6 +97,12 @@ public class AboutDialog extends BaseDialog{
     public void showCredits(){
         BaseDialog dialog = new BaseDialog("@credits");
         dialog.addCloseButton();
+        Texture icon = new Texture("icons/icon_64.png");
+        TextureRegion iconloaded = new TextureRegion(icon);
+        dialog.cont.image(iconloaded).width(64f).height(64f).center().setBounds(0, 0, iconloaded.width + 12, iconloaded.height);
+        dialog.cont.row();
+        dialog.cont.add("Genshindustry\n\""+ Version.codename+ "\" build "+Version.build+" v"+Version.versionNumber).center();
+        dialog.cont.row();
         dialog.cont.add("@credits.text").fillX().wrap().get().setAlignment(Align.center);
         dialog.cont.row();
         if(!contributors.isEmpty()){
