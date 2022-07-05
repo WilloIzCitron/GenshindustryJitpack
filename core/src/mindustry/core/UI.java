@@ -182,6 +182,8 @@ public class UI implements ApplicationListener, Loadable{
         restart = new GameOverDialog();
         join = new JoinDialog();
         discord = new DiscordDialog();
+        systeminfo = new SysteminfoDialog();
+        easterEgg = new EasterEggDialog();
         load = new LoadDialog();
         custom = new CustomGameDialog();
         language = new LanguageDialog();

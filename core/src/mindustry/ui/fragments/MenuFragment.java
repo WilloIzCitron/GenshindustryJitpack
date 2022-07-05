@@ -87,6 +87,10 @@ public class MenuFragment{
             float logow = Math.min(logo.width * logoscl, Core.graphics.getWidth() - Scl.scl(20));
             float logoh = logow * (float)logo.height / logo.width;
 
+            float fx = (int)(width / 2f);
+
+            if (!android && !ios)
+                fx = (int)(width / 1.4f);
             float fy = (int)(height - 6 - logoh) + logoh / 2 - (Core.graphics.isPortrait() ? Scl.scl(30f) : 0f);
 
             Draw.color();
