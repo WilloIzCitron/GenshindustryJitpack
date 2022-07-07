@@ -13,41 +13,43 @@ import static mindustry.Vars.*;
 
 public class LanguageDialog extends BaseDialog{
     public static final ObjectMap<String, String> displayNames = ObjectMap.of(
-    "id_ID", "Bahasa Indonesia (Indonesia)",
+    "be", "Беларуская",
+    "bg", "Български",
+    "cs", "Čeština",
     "da", "Dansk",
     "de", "Deutsch",
-    "et", "Eesti",
-    "en", "English",
+    "en-US", "English (United States)",
     "es", "Español",
+    "et", "Eesti",
     "eu", "Euskara",
+    "fi", "Suomi",
     "fil", "Filipino",
     "fr", "Français",
-    "it", "Italiano",
-    "lt", "Lietuvių",
     "hu", "Magyar",
-    "nl", "Nederlands",
+    "id_ID", "Bahasa Indonesia",
+    "it", "Italiano",
+    "ja", "日本語",
+    "ko", "한국어",
+    "lt", "Lietuvių",
     "nl_BE", "Nederlands (België)",
+    "nl", "Nederlands",
     "pl", "Polski",
     "pt_BR", "Português (Brasil)",
     "pt_PT", "Português (Portugal)",
     "ro", "Română",
-    "fi", "Suomi",
-    "sv", "Svenska",
-    "vi", "Tiếng Việt",
-    "tk", "Türkmen dili",
-    "tr", "Türkçe",
-    "cs", "Čeština",
-    "be", "Беларуская",
-    "bg", "Български",
     "ru", "Русский",
     "sr", "Српски",
-    "uk_UA", "Українська",
+    "sv", "Svenska",
     "th", "ไทย",
+    "tk", "Türkmen dili",
+    "tr", "Türkçe",
+    "uk_UA", "Українська",
+    "vi", "Tiếng Việt",
     "zh_CN", "简体中文",
     "zh_TW", "正體中文",
-    "ja", "日本語",
-    "ko", "한국어",
-    "router", "router"
+    "router", "router",
+    "paimon", "Paimon",
+    "siuuu", "Christiano Ronaldo"
     );
 
     private Locale lastLocale;
@@ -59,7 +61,8 @@ public class LanguageDialog extends BaseDialog{
     }
 
     public static String getDisplayName(Locale locale){
-        return displayNames.get(locale.toString(), locale.toString());
+        String str = locale.toString().replace("in_ID", "id_ID");
+        return displayNames.get(str, str);
     }
 
     private void setup(){
@@ -120,6 +123,6 @@ public class LanguageDialog extends BaseDialog{
             }
         }
 
-        Core.settings.put("locale", new Locale("en").toString());
+        Core.settings.put("locale", new Locale("en-US").toString());
     }
 }
