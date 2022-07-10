@@ -264,10 +264,8 @@ public class UnitType extends UnlockableContent{
     public @Nullable Color engineColor = null;
     /** color for inner portions of engines */
     public Color engineColorInner = Color.white;
-    /** if true, this shows the trails */
-    public boolean showTrails = Core.settings.getBool("showtrails");
     /** length of engine trail (if flying) or wave trail (if naval) */
-    public int trailLength = Core.settings.getInt("traillength", 5);
+    public int trailLength = 0;
     /** override for engine trail color */
     public @Nullable Color trailColor;
 
@@ -1132,7 +1130,7 @@ public class UnitType extends UnlockableContent{
         if(drawBody) drawOutline(unit);
         drawWeaponOutlines(unit);
         if(engineLayer > 0) Draw.z(engineLayer);
-        if(showTrails && trailLength > 0 && !naval && (unit.isFlying() || useEngineElevation)){
+        if(trailLength > 0 && !naval && (unit.isFlying() || !useEngineElevation)){
             drawTrail(unit);
         }
         if(engines.size > 0) drawEngines(unit);

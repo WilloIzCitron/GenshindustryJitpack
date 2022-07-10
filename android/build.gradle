@@ -57,7 +57,7 @@ android{
         applicationId "io.anuke.mindustry"
         minSdkVersion 14
         targetSdkVersion 31
-
+        
         versionName versionNameResult
         versionCode = vcode
 
